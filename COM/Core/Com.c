@@ -86,10 +86,6 @@
 #include"ComOSPort.h"
 #endif
 
-#ifdef USE_WIFI
-#include "CommInterface.h"
-#endif  //#ifdef USE_WIFI  
-
 /*
 ************************************************************************************************************************************
 *                                 GLOBAL VARIABLES
@@ -131,7 +127,7 @@ static ComX  Com[TOTAL_CHANNEL_NUM];
 */
 
 
-static void ComxTxMsgStart(COMn comx,T08U*buffer,T32U size);
+static void ComxTxMsgStart(COMn comx,const T08U*buffer,T32U size);
 static void ComxRxMsgStart(COMn comx);
 static void ComxRxMsgStop (COMn comx);
 static void ComxStartTimer(COMn comx);
@@ -344,7 +340,7 @@ T32S ComInit(COMn comx,Format format,Baud baud)
 ************************************************************************************************************************************
 */
 
-T32S ComTxMessage(COMn comx,T08U * TxBuffer, T32U TxMsgSize)
+T32S ComTxMessage(COMn comx,const T08U * TxBuffer, T32U TxMsgSize)
 {
     if(TxBuffer == (T08U *)0 || TxMsgSize < 1 ){
         return 0;                                           /* ,Tx message complete, '0' byte is sent out             */
@@ -976,19 +972,6 @@ void ComxRxISR(COMn comx)
 	ComxStartTimer(comx);
 
     } else {
-#ifdef USE_WIFI 
-      if( Com[comx].g_RxMsgSize + 1 <= Com[comx].g_HeaderByteNum )
-      {
-        Com[comx].g_RxBuffer[Com[comx].g_RxMsgSize++] = data;
-        for(i = 0;i < Com[comx].g_RxMsgSize;i++) {
-          if(Com[comx].g_RxBuffer[i] != Com[comx].g_FrameHeader[i]) {
-            Com[comx].g_RxMsgSize      = 0;
-            Com[comx].g_NowRecvByteNum = 0;
-            return;
-          }
-        }
-        return;
-#else
 	if( Com[comx].g_RxMsgSize + 1 < Com[comx].g_HeaderByteNum){
 	    Com[comx].g_RxBuffer[Com[comx].g_RxMsgSize++] = data;
 	    return;
@@ -1002,7 +985,6 @@ void ComxRxISR(COMn comx)
 		}
 	    }
 	    return;
-#endif  //#ifdef USE_WIFI 
 	} else if(Com[comx].g_RxMsgSize    == Com[comx].g_HeaderByteNum) {
 	    if ( (Com[comx].g_RxAddr == data) || (Com[comx].g_addrfilter ==  ANY_ADDRESS) ||
 		 ((data == BROADCAST_ADDRESS) && (Com[comx].g_addrfilter == SPECIFIC_BROADCAST)) ) {
@@ -1163,7 +1145,7 @@ void ComxTimerISR(COMn comx)
 ************************************************************************************************************************************
 */
 
-static void ComxTxMsgStart(COMn comx,T08U*buffer,T32U size)
+static void ComxTxMsgStart(COMn comx,const T08U*buffer,T32U size)
 {
     T32U TxCounter;
     switch(comx){

@@ -14,8 +14,8 @@
 *filename     : Comx_Port.h  (where x can be 1 to 10)
 *brief        : This file can be used as a template Ports file for COM service.
 *programmer(s): ZG
-*version      : V1.71
-*date         : 2014-11-05
+*version      : V1.80
+*date         : 2016-04-16
 ************************************************************************************************************************************
 */
 

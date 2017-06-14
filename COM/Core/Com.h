@@ -52,7 +52,7 @@
 */
 
 T32S ComInit(COMn comx,Format format,Baud baud);
-T32S ComTxMessage(COMn comx,T08U * TxBuffer, T32U TxMsgSize);
+T32S ComTxMessage(COMn comx,const T08U * TxBuffer, T32U TxMsgSize);
 T32S ComRxMessage(COMn comx,T08U *RxBuffer,const T08U *FrameHeader,T08U HeaderByteNum,
                   T08U RxAddr,AddrFilter rule,T32U RxBufferSize,T32U TimeOutMs,ComOpt opt);
 T32S ComXYRxMessage(ComxyIf *If);

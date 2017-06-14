@@ -16,7 +16,7 @@
 *brief        : This file can be used as a template Ports file for COM service.
 *programmer(s): ZG
 *version      : V1.80
-*date         : 2016-01-12
+*date         : 2016-04-16
 ************************************************************************************************************************************
 */
 
